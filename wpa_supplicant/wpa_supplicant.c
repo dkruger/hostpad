@@ -2601,7 +2601,10 @@ void wpa_supplicant_select_network(struct wpa_supplicant *wpa_s,
 {
 
 	struct wpa_ssid *other_ssid;
+	struct wpa_ssid *old_ssid;
 	int disconnected = 0;
+
+	old_ssid = wpa_s->current_ssid;
 
 	if (ssid && ssid != wpa_s->current_ssid && wpa_s->current_ssid) {
 		wpa_s->own_disconnect_req = 1;
@@ -2663,6 +2666,9 @@ void wpa_supplicant_select_network(struct wpa_supplicant *wpa_s,
 
 	if (ssid)
 		wpas_notify_network_selected(wpa_s, ssid);
+
+	if (old_ssid != wpa_s->current_ssid)
+		wpas_notify_network_changed(wpa_s);
 }
 
 

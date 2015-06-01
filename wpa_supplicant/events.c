@@ -266,6 +266,7 @@ void wpa_supplicant_stop_countermeasures(void *eloop_ctx, void *sock_ctx)
 void wpa_supplicant_mark_disassoc(struct wpa_supplicant *wpa_s)
 {
 	int bssid_changed;
+	int ssid_changed;
 
 	wnm_bss_keep_alive_deinit(wpa_s);
 
@@ -300,7 +301,10 @@ void wpa_supplicant_mark_disassoc(struct wpa_supplicant *wpa_s)
 	if (wpa_key_mgmt_wpa_psk(wpa_s->key_mgmt))
 		eapol_sm_notify_eap_success(wpa_s->eapol, FALSE);
 	wpa_s->ap_ies_from_associnfo = 0;
+	ssid_changed = (wpa_s->current_ssid != NULL);
 	wpa_s->current_ssid = NULL;
+	if (ssid_changed)
+		wpas_notify_network_changed(wpa_s);
 	eapol_sm_notify_config(wpa_s->eapol, NULL, NULL);
 	wpa_s->key_mgmt = 0;
 
@@ -2383,8 +2387,12 @@ static void wpa_supplicant_event_disassoc_finish(struct wpa_supplicant *wpa_s,
 	wpa_supplicant_mark_disassoc(wpa_s);
 
 	if (authenticating && (wpa_s->drv_flags & WPA_DRIVER_FLAGS_SME)) {
+		int ssid_changed;
 		sme_disassoc_while_authenticating(wpa_s, prev_pending_bssid);
+		ssid_changed = (wpa_s->current_ssid != last_ssid);
 		wpa_s->current_ssid = last_ssid;
+		if (ssid_changed)
+			wpas_notify_network_changed(wpa_s);
 	}
 
 	if (fast_reconnect &&
