@@ -3922,6 +3922,33 @@ dbus_bool_t wpas_dbus_getter_bss_age(DBusMessageIter *iter, DBusError *error,
 
 
 /**
+ * wpas_dbus_getter_qual - Return the quality of a BSS
+ * @iter: Pointer to incoming dbus message iter
+ * @error: Location to store error on failure
+ * @user_data Function specific data
+ * @Returns TRUE on success, FALSE on failure
+ *
+ * Getter for "Quality" property.
+ */
+dbus_bool_t wpas_dbus_getter_bss_qual(DBusMessageIter *iter, DBusError *error,
+                     void *user_data)
+{
+    struct bss_handler_args *args = user_data;
+	struct wpa_bss *res;
+	int qual;
+
+	res = get_bss_helper(args, error, __func__);
+	if (!res)
+		return FALSE;
+
+	qual =  res->qual;
+	return wpas_dbus_simple_property_getter(iter, DBUS_TYPE_INT16,
+						&qual, error);
+
+}
+
+
+/**
  * wpas_dbus_getter_enabled - Check whether network is enabled or disabled
  * @iter: Pointer to incoming dbus message iter
  * @error: Location to store error on failure

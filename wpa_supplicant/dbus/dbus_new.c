@@ -1918,6 +1918,9 @@ void wpas_dbus_bss_signal_prop_changed(struct wpa_supplicant *wpa_s,
 	case WPAS_DBUS_BSS_PROP_AGE:
 		prop = "Age";
 		break;
+    case WPAS_DBUS_BSS_PROP_QUAL:
+        prop = "Quality";
+        break;
 	default:
 		wpa_printf(MSG_ERROR, "dbus: %s: Unknown Property value %d",
 			   __func__, property);
@@ -2344,6 +2347,10 @@ static const struct wpa_dbus_property_desc wpas_dbus_bss_properties[] = {
 	  wpas_dbus_getter_bss_age,
 	  NULL
 	},
+    { "Quality", WPAS_DBUS_NEW_IFACE_BSS, "i",
+      wpas_dbus_getter_bss_qual,
+      NULL
+    },
 	{ NULL, NULL, NULL, NULL, NULL }
 };
 

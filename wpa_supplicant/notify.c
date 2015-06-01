@@ -448,6 +448,13 @@ void wpas_notify_bss_seen(struct wpa_supplicant *wpa_s, unsigned int id)
 }
 
 
+void wpas_notify_bss_quality_changed(struct wpa_supplicant *wpa_s,
+                  unsigned int id)
+{
+    wpas_dbus_bss_signal_prop_changed(wpa_s, WPAS_DBUS_BSS_PROP_QUAL, id);
+}
+
+
 void wpas_notify_blob_added(struct wpa_supplicant *wpa_s, const char *name)
 {
 	if (wpa_s->p2p_mgmt)

@@ -274,6 +274,9 @@ dbus_bool_t wpas_dbus_getter_bss_ies(DBusMessageIter *iter, DBusError *error,
 dbus_bool_t wpas_dbus_getter_bss_age(DBusMessageIter *iter, DBusError *error,
 				     void *user_data);
 
+dbus_bool_t wpas_dbus_getter_bss_qual(DBusMessageIter *iter, DBusError *error,
+				     void *user_data);
+
 dbus_bool_t wpas_dbus_getter_enabled(DBusMessageIter *iter, DBusError *error,
 				     void *user_data);
 

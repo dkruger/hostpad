@@ -33,6 +33,7 @@
 #define WPA_BSS_WPS_CHANGED_FLAG	BIT(6)
 #define WPA_BSS_RATES_CHANGED_FLAG	BIT(7)
 #define WPA_BSS_IES_CHANGED_FLAG	BIT(8)
+#define WPA_BSS_QUALITY_CHANGED_FLAG    BIT(9)
 
 
 static void wpa_bss_set_hessid(struct wpa_bss *bss)
@@ -489,6 +490,9 @@ static u32 wpa_bss_compare_res(const struct wpa_bss *old,
 	    !are_ies_equal(old, new_res, WLAN_EID_EXT_SUPP_RATES))
 		changes |= WPA_BSS_RATES_CHANGED_FLAG;
 
+    if (old->qual != new->qual)
+        changes |= WPA_BSS_QUALITY_CHANGED_FLAG;
+
 	return changes;
 }
 
@@ -522,6 +526,9 @@ static void notify_bss_changes(struct wpa_supplicant *wpa_s, u32 changes,
 
 	if (changes & WPA_BSS_RATES_CHANGED_FLAG)
 		wpas_notify_bss_rates_changed(wpa_s, bss->id);
+
+    if (changes & WPA_BSS_QUALITY_CHANGED_FLAG)
+        wpas_notify_bss_quality_changed(wpa_s, bss->id);
 
 	wpas_notify_bss_seen(wpa_s, bss->id);
 }
