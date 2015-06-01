@@ -142,6 +142,8 @@ void wpas_dbus_bss_signal_prop_changed(struct wpa_supplicant *wpa_s,
 void wpas_dbus_signal_network_enabled_changed(struct wpa_supplicant *wpa_s,
 					      struct wpa_ssid *ssid);
 void wpas_dbus_signal_network_selected(struct wpa_supplicant *wpa_s, int id);
+void wpas_dbus_signal_auth_failed(struct wpa_supplicant *wpa_s,
+					 struct wpa_ssid *ssid);
 void wpas_dbus_signal_network_request(struct wpa_supplicant *wpa_s,
 				      struct wpa_ssid *ssid,
 				      enum wpa_ctrl_req_type rtype,

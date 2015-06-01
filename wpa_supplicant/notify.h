@@ -27,6 +27,8 @@ void wpas_notify_network_changed(struct wpa_supplicant *wpa_s);
 void wpas_notify_ap_scan_changed(struct wpa_supplicant *wpa_s);
 void wpas_notify_bssid_changed(struct wpa_supplicant *wpa_s);
 void wpas_notify_auth_changed(struct wpa_supplicant *wpa_s);
+void wpas_notify_auth_failed(struct wpa_supplicant *wpa_s,
+					 struct wpa_ssid *ssid);
 void wpas_notify_network_enabled_changed(struct wpa_supplicant *wpa_s,
 					 struct wpa_ssid *ssid);
 void wpas_notify_network_selected(struct wpa_supplicant *wpa_s,

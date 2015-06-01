@@ -5169,6 +5169,8 @@ void wpas_auth_failed(struct wpa_supplicant *wpa_s, char *reason)
 		"id=%d ssid=\"%s\" auth_failures=%u duration=%d reason=%s",
 		ssid->id, wpa_ssid_txt(ssid->ssid, ssid->ssid_len),
 		ssid->auth_failures, dur, reason);
+
+	wpas_notify_auth_failed(wpa_s, ssid);
 }
 
 

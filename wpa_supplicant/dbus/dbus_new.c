@@ -442,6 +442,47 @@ void wpas_dbus_signal_network_selected(struct wpa_supplicant *wpa_s, int id)
 	wpas_dbus_signal_network(wpa_s, id, "NetworkSelected", FALSE);
 }
 
+/**
+ * wpas_dbus_signal_auth_failed - Send a signal notifying that authentication
+ * failed on the given SSID
+ * @wpa_s: %wpa_supplicant network interface data
+ * @ssid: configured network which failed authentication
+ */
+void wpas_dbus_signal_auth_failed(struct wpa_supplicant *wpa_s,
+					 struct wpa_ssid *ssid)
+{
+	struct wpas_dbus_priv *iface;
+	DBusMessage *msg;
+	DBusMessageIter iter;
+	char net_obj_path[WPAS_DBUS_OBJECT_PATH_MAX];
+	const char *net_ptr;
+
+	iface = wpa_s->global->dbus;
+
+	/* Do nothing if the control interface is not turned on */
+	if (iface == NULL)
+		return;
+
+	msg = dbus_message_new_signal(wpa_s->dbus_new_path,
+				      WPAS_DBUS_NEW_IFACE_INTERFACE,
+				      "AuthFailed");
+	if (msg == NULL)
+		return;
+
+	os_snprintf(net_obj_path, WPAS_DBUS_OBJECT_PATH_MAX,
+		    "%s/" WPAS_DBUS_NEW_NETWORKS_PART "/%u",
+		    wpa_s->dbus_new_path, ssid->id);
+	net_ptr = &net_obj_path[0];
+
+	dbus_message_iter_init_append(msg, &iter);
+	if (!dbus_message_iter_append_basic(&iter, DBUS_TYPE_OBJECT_PATH,
+					    &net_ptr))
+		wpa_printf(MSG_ERROR, "dbus: Failed to construct signal");
+	else
+		dbus_connection_send(iface->con, msg, NULL);
+	dbus_message_unref(msg);
+}
+
 
 /**
  * wpas_dbus_signal_network_request - Indicate that additional information

@@ -153,6 +153,16 @@ void wpas_notify_auth_changed(struct wpa_supplicant *wpa_s)
 }
 
 
+void wpas_notify_auth_failed(struct wpa_supplicant *wpa_s,
+					 struct wpa_ssid *ssid)
+{
+	if (wpa_s->p2p_mgmt)
+		return;
+
+	wpas_dbus_signal_auth_failed(wpa_s, ssid);
+}
+
+
 void wpas_notify_network_enabled_changed(struct wpa_supplicant *wpa_s,
 					 struct wpa_ssid *ssid)
 {
