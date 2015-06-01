@@ -283,6 +283,7 @@ void wpas_notify_network_added(struct wpa_supplicant *wpa_s,
 	 */
 	if (!ssid->p2p_group && wpa_s->global->p2p_group_formation != wpa_s)
 		wpas_dbus_register_network(wpa_s, ssid);
+	wpas_dbus_signal_prop_changed(wpa_s, WPAS_DBUS_PROP_NETWORKS);
 }
 
 
@@ -318,6 +319,7 @@ void wpas_notify_network_removed(struct wpa_supplicant *wpa_s,
 		wpas_notify_persistent_group_removed(wpa_s, ssid);
 
 	wpas_p2p_network_removed(wpa_s, ssid);
+	wpas_dbus_signal_prop_changed(wpa_s, WPAS_DBUS_PROP_NETWORKS);
 }
 
 

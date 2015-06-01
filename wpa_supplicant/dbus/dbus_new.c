@@ -1842,6 +1842,9 @@ void wpas_dbus_signal_prop_changed(struct wpa_supplicant *wpa_s,
 	case WPAS_DBUS_PROP_CURRENT_NETWORK:
 		prop = "CurrentNetwork";
 		break;
+	case WPAS_DBUS_PROP_NETWORKS:
+		prop = "Networks";
+		break;
 	case WPAS_DBUS_PROP_BSSS:
 		prop = "BSSs";
 		break;
